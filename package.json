@@ -10,10 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite3": "^8.1.0",
+    "common-tags": "^1.8.2",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
+    "@types/common-tags": "^1.8.1",
     "eslint": "^8.33.0"
   }
 }
