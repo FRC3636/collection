@@ -1,32 +1,32 @@
 {
-  "name": "botstuff",
-  "version": "1.0.0",
-  "description": "",
-  "main": "bot.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "better-sqlite3": "^8.1.0",
-    "common-tags": "^1.8.2",
-    "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3"
-  },
-  "devDependencies": {
-    "@types/better-sqlite3": "^7.6.3",
-    "@types/common-tags": "^1.8.1",
-    "@types/node": "^18.13.0",
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
-    "eslint": "^8.33.0",
-    "eslint-config-magenta": "^3.0.0",
-    "eslint-plugin-deprecation": "^1.3.3",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-unicorn": "^43.0.2",
-    "typescript": "^4.9.5"
-  },
-  "packageManager": "pnpm@7.27.0"
+    "name": "botstuff",
+    "version": "1.0.0",
+    "description": "",
+    "main": "bot.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "better-sqlite3": "^8.1.0",
+        "common-tags": "^1.8.2",
+        "discord.js": "^14.7.1"
+    },
+    "devDependencies": {
+        "@types/better-sqlite3": "^7.6.3",
+        "@types/common-tags": "^1.8.1",
+        "@types/node": "^18.13.0",
+        "@typescript-eslint/eslint-plugin": "^5.51.0",
+        "@typescript-eslint/parser": "^5.51.0",
+        "eslint": "^8.33.0",
+        "eslint-config-magenta": "^3.0.0",
+        "eslint-plugin-deprecation": "^1.3.3",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-unicorn": "^43.0.2",
+        "prettier": "^2.8.4",
+        "typescript": "^4.9.5"
+    },
+    "packageManager": "pnpm@7.27.0"
 }
