@@ -1,63 +1,63 @@
 // eslint-disable-next-line no-unused-vars
 const { SlashCommandBuilder, ChatInputCommandInteraction } = require('discord.js');
-const db = require('../roster-database');
+const db = require('../collection-database');
 const { TemplateTag } = require('common-tags');
 const sql = new TemplateTag();
 
-const rosterCommand =
+const collectionCommand =
     new SlashCommandBuilder()
-        .setName('roster')
-        .setDescription('manage roster')
+        .setName('collection')
+        .setDescription('manage collection')
 
-        // clears rosters
+        // clears collections
         .addSubcommand(subcommand =>
             subcommand
             .setName('clear')
-            .setDescription('clears all rosters'),
+            .setDescription('clears all collections'),
         )
 
-        // get roster info
+        // get collection info
         .addSubcommandGroup(group =>
             group
                 .setName('get')
-                .setDescription('Display members/values of rosters')
+                .setDescription('Display members/values of collections')
 
-                // get main roster
+                // get main collection
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('main')
-                        .setDescription('displays all members and values in main roster'),
+                        .setDescription('displays all members and values in main collection'),
                 )
 
-                // get wait roster
+                // get wait collection
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('wait')
-                        .setDescription('displays all members and values in wait roster'),
+                        .setDescription('displays all members and values in wait collection'),
                 )
-                // get all rosters
+                // get all collections
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('all')
-                        .setDescription('displays all members and values in all rosters'),
+                        .setDescription('displays all members and values in all collections'),
                 ),
         )
 
-        // manage main roster
+        // manage main collection
         .addSubcommandGroup(group =>
             group
                 .setName('main')
-                .setDescription('manage main roster')
+                .setDescription('manage main collection')
 
-                // add member to main roster
+                // add member to main collection
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('add')
-                        .setDescription('add member to main roster')
+                        .setDescription('add member to main collection')
                         .addUserOption(option =>
                             option
                                 .setName('user')
-                                .setDescription('user to add to roster')
+                                .setDescription('user to add to collection')
                                 .setRequired(true),
                         )
                         .addStringOption(option =>
@@ -67,11 +67,11 @@ const rosterCommand =
                                 .setRequired(true)),
                 )
 
-                // remove member from main roster
+                // remove member from main collection
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('remove')
-                        .setDescription('remove member from roster')
+                        .setDescription('remove member from collection')
                         .addUserOption(option =>
                             option
                                 .setName('user')
@@ -79,7 +79,7 @@ const rosterCommand =
                                 .setRequired(true),
                         ),
                 )
-                // change value of member in main roster
+                // change value of member in main collection
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('change')
@@ -87,7 +87,7 @@ const rosterCommand =
                         .addUserOption(option =>
                             option
                                 .setName('user')
-                                .setDescription('changes value of user in main roster')
+                                .setDescription('changes value of user in main collection')
                                 .setRequired(true),
                         )
                         .addStringOption(option =>
@@ -99,29 +99,29 @@ const rosterCommand =
                 ),
         )
 
-        // manage wait roster
+        // manage wait collection
         .addSubcommandGroup(group =>
             group
                 .setName('wait')
-                .setDescription('manage wait roster')
+                .setDescription('manage wait collection')
 
-                // add member to wait roster
+                // add member to wait collection
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('add')
-                        .setDescription('add member to wait roster')
+                        .setDescription('add member to wait collection')
                         .addUserOption(option =>
                             option
                                 .setName('user')
-                                .setDescription('user to add to roster')
+                                .setDescription('user to add to collection')
                                 .setRequired(true),
                         ),
                 )
-                // remove member from wait roster
+                // remove member from wait collection
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('remove')
-                        .setDescription('remove member from wait roster')
+                        .setDescription('remove member from wait collection')
                         .addUserOption(option =>
                             option
                                 .setName('user')
@@ -142,9 +142,9 @@ const waitAddStmt = db.prepare(sql`INSERT INTO wait_table (username) VALUES (?);
 
 const mainChangeStmt = db.prepare(sql`UPDATE main_table SET value = ? WHERE username = ?;`);
 
-const setCounter = db.prepare(sql`UPDATE counter_table SET items = ? WHERE roster = ?;`);
+const setCounter = db.prepare(sql`UPDATE counter_table SET items = ? WHERE collection = ?;`);
 
-const getCounter = db.prepare(sql`SELECT items FROM counter_table WHERE roster = ?;`);
+const getCounter = db.prepare(sql`SELECT items FROM counter_table WHERE collection = ?;`);
 
 const mainRemoveStmt = db.prepare(sql`DELETE FROM main_table WHERE username = ?;`);
 const waitRemoveStmt = db.prepare(sql`DELETE FROM wait_table WHERE username = ?;`);
@@ -153,7 +153,7 @@ const deleteMainStmt = db.prepare(sql`DELETE FROM main_table;`);
 const deleteWaitStmt = db.prepare(sql`DELETE FROM wait_table;`);
 
 module.exports = {
-    data: rosterCommand,
+    data: collectionCommand,
     /**
      *
      * @param {ChatInputCommandInteraction} interaction
@@ -179,7 +179,7 @@ module.exports = {
             deleteWaitStmt.run();
             setCounter.run(0, 'main');
             setCounter.run(0, 'wait');
-            await interaction.reply('cleared all rosters');
+            await interaction.reply('cleared all collections');
             return;
         }
         switch (subcommand) {
@@ -191,7 +191,7 @@ module.exports = {
                             .join('\n'));
                     break;
                 }
-                await interaction.reply('roster is empty');
+                await interaction.reply('collection is empty');
                 break;
             }
             case 'get wait':{
@@ -202,7 +202,7 @@ module.exports = {
                             .join('\n'));
                     break;
                 }
-                await interaction.reply('wait roster is empty');
+                await interaction.reply('wait collection is empty');
                 break;
             }
             case 'get all':{
@@ -214,10 +214,10 @@ module.exports = {
                 const wait = getWaitStmt.all();
                 if (wait.length > 0 && main.length > 0) {
                     await interaction.reply(
-                    `\tMain Roster:\n${main.map(({ username, value }) => `<@${username}> : ${value}`).join('\n')}\n\nWait Roster:\n${wait.map(({ username }) => `<@${username}>`).join('\n')}`);
+                    `\tMain collection:\n${main.map(({ username, value }) => `<@${username}> : ${value}`).join('\n')}\n\nWait collection:\n${wait.map(({ username }) => `<@${username}>`).join('\n')}`);
                     break;
                 }
-                await interaction.reply('a roster is empty');
+                await interaction.reply('a collection is empty');
                 break;
             }
             case 'main add': {
@@ -226,16 +226,16 @@ module.exports = {
                     return;
                 }
                 if (mainCount >= 9) {
-                    await interaction.reply('main roster is full');
+                    await interaction.reply('main collection is full');
                     break;
                 }
                 if (getUserMain.get(user) === undefined && getUserWait.get(user) === undefined) {
                     mainAddStmt.run(user, value);
                     setCounter.run(mainCount + 1, 'main');
-                    await interaction.reply(`:white_check_mark: Added <@${user}> to the roster with ${value}.`);
+                    await interaction.reply(`:white_check_mark: Added <@${user}> to the collection with ${value}.`);
                     break;
                 }
-                await interaction.reply(`:x: <@${user}> is already on a roster.`);
+                await interaction.reply(`:x: <@${user}> is already on a collection.`);
                 break;
             }
             case 'main remove': {
@@ -246,10 +246,10 @@ module.exports = {
                 if (getUserMain.get(user) !== undefined) {
                     mainRemoveStmt.run(user);
                     setCounter.run(mainCount - 1, 'main');
-                    await interaction.reply(`:white_check_mark: Removed <@${user}> from the roster.`);
+                    await interaction.reply(`:white_check_mark: Removed <@${user}> from the collection.`);
                     break;
                 }
-                await interaction.reply(`:x: <@${user}> is not on the roster.`);
+                await interaction.reply(`:x: <@${user}> is not on the collection.`);
                 break;
             }
             case 'main change':{
@@ -258,7 +258,7 @@ module.exports = {
                     return;
                 }
                 if (getUserMain.get(user) === undefined) {
-                    await interaction.reply(`:x: <@${user}> is not on the roster.`);
+                    await interaction.reply(`:x: <@${user}> is not on the collection.`);
                     break;
                 }
                 mainChangeStmt.run(value, user);
@@ -271,17 +271,17 @@ module.exports = {
                     return;
                 }
                 if (waitCount >= 9) {
-                    await interaction.reply('wait roster is full');
+                    await interaction.reply('wait collection is full');
                     break;
                 }
                 if (getUserWait.get(user) === undefined) {
                     console.log(`user: ${user}`);
                     waitAddStmt.run(user);
                     setCounter.run(waitCount + 1, 'wait');
-                    await interaction.reply(`:white_check_mark: Added <@${user}> to the wait roster `);
+                    await interaction.reply(`:white_check_mark: Added <@${user}> to the wait collection `);
                     break;
                 }
-                await interaction.reply(`:x: <@${user}> is already on the wait roster.`);
+                await interaction.reply(`:x: <@${user}> is already on the wait collection.`);
                 break;
             }
             case 'wait remove':{
@@ -292,10 +292,10 @@ module.exports = {
                 if (getUserWait.get(user) !== undefined) {
                     waitRemoveStmt.run(user);
                     setCounter.run(waitCount - 1, 'wait');
-                    await interaction.reply(`:white_check_mark: Removed <@${user}> from the wait roster.`);
+                    await interaction.reply(`:white_check_mark: Removed <@${user}> from the wait collection.`);
                     break;
                 }
-                await interaction.reply(`:x: <@${user}> is not on the wait roster.`);
+                await interaction.reply(`:x: <@${user}> is not on the wait collection.`);
                 break;
             }
 
