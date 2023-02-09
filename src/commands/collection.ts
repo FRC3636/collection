@@ -7,7 +7,7 @@ import {
 import db from "../collection-database";
 import { TemplateTag } from "common-tags";
 import Command from "../command";
-import * as assert from 'node:assert';
+import * as assert from "node:assert";
 
 // eslint-disable-next-line deprecation/deprecation
 const sql = new TemplateTag();
@@ -195,7 +195,10 @@ export default {
         const user = interaction.options.getUser("user")?.id;
         const value = interaction.options.getString("value");
 
-        assert.ok(interaction.inCachedGuild(), "expected the command to be run in a server");
+        assert.ok(
+            interaction.inCachedGuild(),
+            "expected the command to be run in a server"
+        );
 
         const permIDs = ["682051435533565979", "766756847138635798"];
         const managePerms =
@@ -225,7 +228,6 @@ export default {
             await interaction.reply("cleared all collections");
             return;
         }
-
 
         const subcommand = `${interaction.options.getSubcommandGroup(
             true
@@ -282,6 +284,8 @@ export default {
                 break;
             }
             case "main add": {
+                assert.ok(user);
+                assert.ok(value);
                 if (!managePerms) {
                     await interaction.reply("no perms???");
                     return;
@@ -307,6 +311,7 @@ export default {
                 break;
             }
             case "main remove": {
+                assert.ok(user);
                 if (!managePerms) {
                     await interaction.reply("no perms???");
                     return;
@@ -325,6 +330,8 @@ export default {
                 break;
             }
             case "main change": {
+                assert.ok(user);
+                assert.ok(value);
                 if (!managePerms) {
                     await interaction.reply("no perms???");
                     return;
@@ -342,6 +349,7 @@ export default {
                 break;
             }
             case "wait add": {
+                assert.ok(user);
                 if (!managePerms) {
                     await interaction.reply("no perms???");
                     return;
@@ -365,6 +373,7 @@ export default {
                 break;
             }
             case "wait remove": {
+                assert.ok(user);
                 if (!managePerms) {
                     await interaction.reply("no perms???");
                     return;
