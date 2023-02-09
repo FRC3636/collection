@@ -142,9 +142,9 @@ const waitAddStmt = db.prepare(sql`INSERT INTO wait_table (username) VALUES (?);
 
 const mainChangeStmt = db.prepare(sql`UPDATE main_table SET value = ? WHERE username = ?;`);
 
-const setCounter = db.prepare(sql`UPDATE counter_table SET items = ? WHERE collection = ?;`);
+const setCounter = db.prepare(sql`UPDATE counter_table SET items = ? WHERE the_collection = ?;`);
 
-const getCounter = db.prepare(sql`SELECT items FROM counter_table WHERE collection = ?;`);
+const getCounter = db.prepare(sql`SELECT items FROM counter_table WHERE the_collection = ?;`);
 
 const mainRemoveStmt = db.prepare(sql`DELETE FROM main_table WHERE username = ?;`);
 const waitRemoveStmt = db.prepare(sql`DELETE FROM wait_table WHERE username = ?;`);
