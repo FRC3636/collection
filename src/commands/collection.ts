@@ -1,7 +1,8 @@
-// eslint-disable-next-line no-unused-vars
-import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+/* eslint-disable complexity */
+import { SlashCommandBuilder, ChatInputCommandInteraction, User } from 'discord.js';
 import db from '../collection-database';
 import { TemplateTag } from 'common-tags';
+// eslint-disable-next-line deprecation/deprecation
 const sql = new TemplateTag();
 
 const collectionCommand =
@@ -158,18 +159,18 @@ module.exports = {
      *
      * @param {ChatInputCommandInteraction} interaction
      */
-    async execute(interaction) {
-        const subcommand = interaction.options.getSubcommandGroup() + ' ' + interaction.options.getSubcommand();
-        const user = interaction.options.getUser("user")?.id;
-        const value = interaction.options.getString("value");
-        const permIDs = ['682051435533565979', '766756847138635798'];
-        const managePerms = interaction.member.roles.cache.some(r => r.name === 'Captain') ||
-                            interaction.member.roles.cache.some(r => r.name === 'Benevolent Leader') ||
-                            interaction.member.roles.cache.some(r => r.name === 'Mod') ||
-                            permIDs.includes(interaction.member.id + '');
+    async execute(interaction: ChatInputCommandInteraction) {
+        const subcommand = `${interaction.options.getSubcommandGroup()  } ${  interaction.options.getSubcommand()}`;
+        const user: User  = interaction.options.getUser("user")?.id;
+        const value: string = interaction.options.getString("value");
+        const permIDs: string[] = ['682051435533565979', '766756847138635798'];
+        const managePerms: boolean = interaction.member.roles.cache.some((r: { name: string }) => r.name === 'Captain') ||
+                            interaction.member.roles.cache.some((r: { name: string }) => r.name === 'Benevolent Leader') ||
+                            interaction.member.roles.cache.some((r: { name: string }) => r.name === 'Mod') ||
+                            permIDs.includes(`${interaction.member.id  }`);
 
-        const mainCount = getCounter.pluck().get('main');
-        const waitCount = getCounter.pluck().get('wait');
+        const mainCount = getCounter.pluck().getNumber('main');
+        const waitCount = getCounter.pluck().getNumber('wait');
 
         if (interaction.options.getSubcommand() === 'clear') {
             if (!managePerms) {
