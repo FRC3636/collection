@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-const { SlashCommandBuilder, ChatInputCommandInteraction } = require('discord.js');
-const db = require('../collection-database');
-const { TemplateTag } = require('common-tags');
+import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import db from '../collection-database';
+import { TemplateTag } from 'common-tags';
 const sql = new TemplateTag();
 
 const collectionCommand =
@@ -165,6 +165,7 @@ module.exports = {
         const permIDs = ['682051435533565979', '766756847138635798'];
         const managePerms = interaction.member.roles.cache.some(r => r.name === 'Captain') ||
                             interaction.member.roles.cache.some(r => r.name === 'Benevolent Leader') ||
+                            interaction.member.roles.cache.some(r => r.name === 'Mod') ||
                             permIDs.includes(interaction.member.id + '');
 
         const mainCount = getCounter.pluck().get('main');
